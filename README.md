@@ -5,7 +5,7 @@
 
 你需要看看这个项目啦！
 
-完成本项目后，和本人上一个完成的[从0手写大模型](https://github.com/Sherlock1956/TransformerFromScratch)感觉类似，其实Flash Attention的原理以及如何用Triton来实现并不复杂，你需要的只是静下心来好好理解体会，普通人也都能学会！（不过至少还是要会求导和线性代数哈哈）
+本项目是基于cs336_assignment2完成的benchmarking和triton相关的实现。完成本项目后，和本人上一个完成的[从0手写大模型](https://github.com/Sherlock1956/TransformerFromScratch)感觉类似，其实Flash Attention的原理以及如何用Triton来实现并不复杂，你需要的只是静下心来好好理解体会，普通人也都能学会！（不过至少还是要会求导和线性代数哈哈）
 
 如果你觉得本项目对你有帮助，欢迎给出你的Github Star🌟，也欢迎对本人的代码批评指正，提出Github Issue / Github PR : )
 ## 项目概述
