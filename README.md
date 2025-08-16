@@ -21,7 +21,7 @@ FlashAttentionTritonLab带你简单入门AI System，主要有两个部分重要
 
 2. 带你从学习理解Flash Attention，到用Pytorch简单实现Flash Attention，再用Triton实现完整的Flash Attention2前向传播+反向传播。并且深入对比不同模型大小，数据大小的情况下Flash Attention的加速表现。
 
-  <img src="assets/image11.png" width="41.8%"/> <img src="assets/image12.png" width="45%"/>
+  <img src="assets/image11.png" width="49%"/> <img src="assets/image12.png" width="49%"/>
 
 **注意**：请充分配套使用test_logs.md文件和cs336_spring2025_assignment2_systems.pdf文件，保证让你对Flash attention和Triton理解得明明白白: )
 
