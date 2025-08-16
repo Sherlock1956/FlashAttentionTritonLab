@@ -1,11 +1,11 @@
 # FlashAttentionTritonLab
 你是否经常听说Flash Attention这个超级大模型训练推理加速器，却一直没有下定决心好好学习它，或者被一大堆公式困扰着迟迟无法理解核心原理。
 
-你又是否总感觉用Triton写算子高高在上，可以加速模型各部分速度，充分压榨GPU性能，看到入门代码示例就望而却步。
+你又是否总感觉用Triton写算子高高在上，可以给模型各部分速度，充分压榨GPU性能，但是看到入门代码示例就望而却步。
 
 你需要看看这个项目啦！
 
-本项目是基于cs336_assignment2完成的benchmarking和triton相关的实现。完成本项目后，和本人上一个完成的[从0手写大模型](https://github.com/Sherlock1956/TransformerFromScratch)感觉类似，其实Flash Attention的原理以及如何用Triton来实现并不复杂，你需要的只是静下心来好好理解体会，普通人也都能学会！（不过至少还是要会求导和线性代数哈哈）
+本项目是基于cs336_assignment2完成的benchmarking和triton相关的实现。基于Triton实现了Flash Attention2的完整前向传播+反向传播。完成本项目后，和本人上一个完成的从0手写大模型感觉类似，其实Flash Attention的原理以及如何用Triton来实现并不复杂，你需要的只是静下心来好好理解体会，普通人也都能学会！（不过至少还是要会求导和线性代数哈哈）
 
 如果你觉得本项目对你有帮助，欢迎给出你的Github Star🌟，也欢迎对本人的代码批评指正，提出Github Issue / Github PR : )
 ## 项目概述
