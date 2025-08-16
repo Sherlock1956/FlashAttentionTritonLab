@@ -6,37 +6,23 @@
 
 ![image-9](./assets/image9.png)
 
-# benchmarking_script
+# benchmarking_script P3
+代码位置：tests/benchmarking_script.py
 
 run on 4090D autodl platform
 
-| 模型规模 | 设备 | d_model | d_ff | num_layers | num_heads | 可训练参数量 (B) | 前向传播时间 (s) | 前向+反向时间 (s) | 纯反向时间 (估算, s) |
-| :------- | ---- | :------ | ---- | ---------- | --------- | ---------------- | ---------------- | ----------------- | -------------------- |
-| small    | cuda | 768     | 3072 | 12         | 12        | 0.128625         | 0.035008         | 0.076579          | 0.0416               |
-| medium   | cuda | 1024    | 4096 | 24         | 16        | 0.423183         | 0.092815         | 0.216040          | 0.1232               |
-| large    | cuda | 1280    | 5120 | 36         | 20        | 0.969412         | 0.187382         | 0.447217          | 0.2598               |
+| 模型规模 | 参数量    | d_model | d_ff | num_layers | num_heads | 可训练参数量 (B) | 前向传播时间 (s) | 前向+反向时间 (s) | 纯反向时间 (估算, s) |
+| :------- | --------- | :------ | ---- | ---------- | --------- | ---------------- | ---------------- | ----------------- | -------------------- |
+| small    | 0.128625B | 768     | 3072 | 12         | 12        | 0.128625         | 0.032844         | 0.050388          | 0.0175               |
+| medium   | 0.423183B | 1024    | 4096 | 24         | 16        | 0.423183         | 0.046657         | 0.093223          | 0.0466               |
+| large    | 0.969412B | 1280    | 5120 | 36         | 20        | 0.969412         | 0.072001         | 0.118849          | 0.0468               |
 
-# nsys_profile  
+# nsys_profile  P5
+代码位置：tests/benchmarking_script.py
 
-如无特殊说明，本节及后续章节模型大小如下：
-- d_model: 768
-- d_ff: 3072
-- num_layers: 12
-- num_heads: 12
-- model size: small
-- trainable_parameters: 0.128625B
+运行方式：nsys profile -o result python tests/benchmarking_script.py
 
 主要学习nsight system的基本使用，包括用nvtx标注感兴趣代码位置，用nsys收集数据，用nsight system打开，察看耗时等等
-
-前向传播平均时间: 0.148052 秒
-前向+反向传播时间: 0.439438 秒
-纯反向传播时间(估算): 0.2914 秒
-完整一步更新时间: 0.5072 秒
-
-前向传播平均时间: 0.077418 秒
-前向+反向传播时间: 0.208083 秒
-纯反向传播时间(估算): 0.1307 秒
-完整一步更新时间: 0.2676 秒
 
 (a) 在cpu上的前向传播和反向传播的nvtx标记和timeit测试出来的基本一致
 
@@ -128,7 +114,8 @@ for i in range(15):
 
 **注意：同一个代码范围内如果有多个nvtx标注，在nsight system中则会显示为重叠的nvtx，是正常情况**
 
-# mixed_precision_accumulation  
+# mixed_precision_accumulation  P6
+代码位置：tests/mixed_presicion_accumulations.py
 
 ```python
 import torch
@@ -161,7 +148,8 @@ tensor(10.0021)
 
 说明在累加时低精度会导入累加误差较大，累加过程需要使用高精度
 
-# benchmarking_mixed_precision  
+# benchmarking_mixed_precision  P7
+代码位置：tests/benchmarking_script.py
 
 全精度：
 
@@ -213,7 +201,8 @@ Loss 值：
 
 layer norm需要计算方差，均值，对数值敏感，而fp16动态范围小，所以保持fp32。如果使用BF16，动态范围较大，就可以使用。
 
-# memory_profiling  
+# memory_profiling  P8
+代码位置：tests/benchmarking_script.py
 
 用torch.cuda.memory._record_memory_history(*max_entries*=1000000)来记录模型运行时显存使用情况
 
@@ -239,7 +228,8 @@ layer norm需要计算方差，均值，对数值敏感，而fp16动态范围小
 
 (e)调节detail这一项，占用显存最多的是哪个部分，这个暂时还不太会看，不过显示的很多都是basic_modules.py中的一个forward函数，大小都是24MB左右，如果是看单个最大的话，峰值处的计算cross entropy loss分配了78MB，是最大的，不太确定是不是这个意思。
 
-# pytorch_attention 
+# pytorch_attention P9
+代码位置：tests/benchmarking_attention.py
 
 测试普通的attention在不同数据规模下的耗时
 
@@ -270,7 +260,8 @@ layer norm需要计算方差，均值，对数值敏感，而fp16动态范围小
 
 - 时间消耗与seq_len成平方比，dim增加对时间消耗影响不是很大
 
-# torch_compile  
+# torch_compile  P10
+代码位置：tests/benchmarking_script.py
 
 使用torch.compile(model)进行模型优化，测试速度明显变快，reserved memory也变少了
 
@@ -300,8 +291,10 @@ layer norm需要计算方差，均值，对数值敏感，而fp16动态范围小
 # Flash attention学习笔记
 
 [推荐观看b站视频](https://www.bilibili.com/video/BV1UT421k7rA/?spm_id_from=333.1391.0.0&vd_source=cacd898e44cd6114d93337514538a038)
+并且结合指导书P18，和P23中的算法伪代码来学习。
 
-# flash_forward
+# flash_forward P19
+代码位置：tests/flash_attention_modules.py
 
 (a)用pytorch实现flash attention2的操作
 
@@ -340,11 +333,20 @@ Seq_len: 16384, PyTorch time: 0.0956s, Flash time: 2.7439s
 
 (b)用triton实现flash attention的forward pass
 
-(c)实际forward pass 中的causal mask
+**这里需要特别注意，triton中的D维度必须要是2的幂次方，如果不是的话需要补充到2的幂次方去才不报错**
 
-# flash_benchmarking
+(c)实现forward pass 中的causal mask
 
-在用triton实现了前向传播的基础上，使用flash attention中的recomputation实现backward pass，用pytorch+compile实现（先不用triton实现）
+使用block所在的行号数和列号数大小数据进行比较，从而生成causal mask
+
+# flash_benchmarking P21
+代码位置：tests/benchmarking_attention.py
+
+在用triton实现了前向传播的基础上，使用flash attention中的recomputation实现backward pass，再用triton实现backward，实现flash attention的完整triton算子
+
+下表是backward由pytorch实现，因为测试时出现了无法解决的Error: CUDA error: an illegal memory access was encountered错误，分析之后发现在d_model, seq_len较大的时候会出现这个错误，应该是shared_memory不够导致的这个问题。
+
+前向传播相比torch.compile的普通attention明显又更快了
 
 | d_model | seq_len | Forward (100 passes) | Backward (100 passes) | Memory Reserved (MB) | Memory Allocated (MB) |
 | ------- | ------- | -------------------- | --------------------- | -------------------- | --------------------- |
@@ -368,3 +370,55 @@ Seq_len: 16384, PyTorch time: 0.0956s, Flash time: 2.7439s
 | 128     | 4096    | 69.29 ms             | 344.14 ms             | 258.00               | 22.14                 |
 | 128     | 8192    | 143.78 ms            | 556.24 ms             | 770.00               | 36.16                 |
 | 128     | 16384   | 428.89 ms            | 1722.82 ms            | 2306.00              | 64.19                 |
+
+
+
+# 补充任务
+
+将triton实现的flash attention替换完整大模型中的attention来测试加速效果
+
+代码位置：tests/benchmarking_script.py
+
+测试数据输入维度：(1,1024)
+
+| 模型规模 | d_model | d_ff  | num_layers | num_heads |
+| -------- | ------- | ----- | ---------- | --------- |
+| small    | 768     | 3072  | 12         | 12        |
+| medium   | 1024    | 4096  | 24         | 16        |
+| large    | 1280    | 5120  | 36         | 20        |
+| xl       | 1600    | 6400  | 48         | 25        |
+| 2.7B     | 2560    | 10240 | 32         | 32        |
+
+| Model Size | Params (B) | 实现方式 | 前向传播 (s) | 前+反向 (s) | 反向传播 (估算, s) | 前向加速比 | 前+反向加速比 | 备注           |
+| ---------- | ---------- | -------- | ------------ | ----------- | ------------------ | ---------- | ------------- | -------------- |
+| small      | 0.129      | 普通     | 0.0551       | 0.0853      | 0.0302             | —          | —             | ✅ 成功         |
+|            |            | Triton   | 0.0371       | 0.0645      | 0.0275             | **1.49×**  | **1.32×**     | ✅ 成功         |
+| medium     | 0.423      | 普通     | 0.1114       | 0.2280      | 0.1165             | —          | —             | ✅ 成功         |
+|            |            | Triton   | 0.0799       | 0.1444      | 0.0645             | **1.40×**  | **1.58×**     | ✅ 成功         |
+| large      | 0.969      | 普通     | 0.2100       | 0.4437      | 0.2337             | —          | —             | ✅ 成功         |
+|            |            | Triton   | 0.1511       | 0.2767      | 0.1256             | **1.39×**  | **1.60×**     | ✅ 成功         |
+| xl         | 1.998      | 普通     | —            | —           | —                  | —          | —             | ❌ OOM (23.5GB) |
+|            |            | Triton   | 0.2866       | 0.5067      | 0.2200             | —          | —             | ✅ 成功         |
+| 2.7B       | 3.407      | 普通     | —            | —           | —                  | —          | —             | ❌ OOM (23.5GB) |
+|            |            | Triton   | —            | —           | —                  | —          | —             | ❌ OOM (23.5GB) |
+
+# 后续工作
+
+- 深入理解triton block和GPU硬件SM等之间的关系，理解如何动态根据GPU型号，数据大小，模型大小来调整triton block的Tile size，以及最大化使用GPU性能
+- 目前只对self attention进行了triton算子加速，但是其他的地方比如FFN中的大量的矩阵乘法没有写算子，后续可以继续优化。
+
+# 遇到的一些问题
+
+- illegal memory access
+
+通常是在triton内核中的block维度出现错误，比如传入的stride和张量指针大小之间不匹配等等问题
+
+后来再flash_benchmarking中，使用triton实现的backward中，当维度较大，seq_len较长的时候也会出现这个错误，这个情况下猜测可能是shared_memory(SRAM)空间不够导致的
+
+- 维度问题
+
+在triton内核中，element shape应该是2的幂次方，如果不是的话需要padding到最小的2的次方来保证正常运行
+
+- out of resource: shared memory, Required: 328832, Hardware limit: 101376. Reducing block sizes or `num_stages` may help.
+
+在写triton的时候需要设置tile_size，如果设置的太大则在SRAM中使用的空间就会超过上限出现这个错误，所以需要动态灵活调整tile_size

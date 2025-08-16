@@ -14,10 +14,5 @@ config = {
     'batch_size': 8,
     'max_grad_norm': 5,
     'save_every': 10000,
-    'val_every': 1000,
-    'remove_layer_norn': True,
-    'train_data_path': "/Users/lyx/Downloads/Study/projects/python/assignment1-basics/data/TinyStoriesV2-GPT4-train.txt.tokenized.npy",
-    'val_data_path': "/Users/lyx/Downloads/Study/projects/python/assignment1-basics/data/TinyStoriesV2-GPT4-valid.txt.tokenized.npy",
-    'output_root_path': '/Users/lyx/Downloads/Study/projects/python/assignment1-basics/models/test_8',
-    'checkpoint_path': '/Users/lyx/Downloads/Study/projects/python/assignment1-basics/models/test_3/checkpoint_80000'
+    'val_every': 1000
 }

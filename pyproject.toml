@@ -1,11 +1,10 @@
 [project]
-name = "cs336-systems"
-version = "1.0.5"
-description = "CS336 Assignment 2 - Systems"
+name = "FlashAttentionTritonLab"
+version = "1.0.0"
+description = "Benchmarking and triton implemented Flashattention2"
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
-    "cs336-basics",
     "humanfriendly",
     "matplotlib",
     "numpy",
@@ -21,20 +20,9 @@ dependencies = [
     "torch>=2.2.2",
 ]
 
-[build-system]
-requires = ["uv_build>=0.8.3,<0.9.0"]
-build-backend = "uv_build"
-
-[tool.uv.build-backend]
-module-name = "cs336_systems"
-module-root = ""
-
 [tool.uv]
-package = true
+package = false
 python-preference = "managed"
-
-[tool.uv.sources]
-cs336-basics = { path = "cs336-basics", editable = true }  # Change this path to your assignment1-basics repo you want to use your own implementation!
 
 
 
