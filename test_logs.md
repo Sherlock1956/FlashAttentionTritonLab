@@ -422,3 +422,6 @@ Seq_len: 16384, PyTorch time: 0.0956s, Flash time: 2.7439s
 - out of resource: shared memory, Required: 328832, Hardware limit: 101376. Reducing block sizes or `num_stages` may help.
 
 在写triton的时候需要设置tile_size，如果设置的太大则在SRAM中使用的空间就会超过上限出现这个错误，所以需要动态灵活调整tile_size
+# 学习笔记
+![image-13](assets/image13.jpg)
+![image-14](assets/image14.jpg)
